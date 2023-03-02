@@ -1,19 +1,65 @@
-import { LayoutChangeEvent, ScrollView, StyleSheet } from "react-native";
-import React from "react";
-import Animated from "react-native-reanimated";
+import {
+  LayoutChangeEvent,
+  ScrollView,
+  StyleProp,
+  StyleSheet,
+  TextStyle,
+} from "react-native";
+import React, { useState } from "react";
+import Animated, {
+  useAnimatedStyle,
+  useSharedValue,
+  withRepeat,
+  withTiming,
+} from "react-native-reanimated";
 
-const AnimatedText = () => {
+type AnimatedTextType = {
+  style?: StyleProp<Animated.AnimateStyle<StyleProp<TextStyle>>>;
+};
+
+const AnimatedText: React.FC<AnimatedTextType> = ({ style }) => {
+  const containerSize = useSharedValue(0);
+  const textSize = useSharedValue(0);
+
+  function onContainerLayout(event: LayoutChangeEvent) {
+    containerSize.value = event.nativeEvent.layout.width;
+  }
+
+  function onTextLayout(event: LayoutChangeEvent) {
+    textSize.value = event.nativeEvent.layout.width;
+  }
+
+  const rStyle = useAnimatedStyle(() => {
+    const scrollTo = -(textSize.value - containerSize.value);
+
+    return {
+      transform: [
+        {
+          translateX: withRepeat(
+            withTiming(scrollTo, {
+              duration: 5000,
+            }),
+            -1,
+            true
+          ),
+        },
+      ],
+    };
+  });
+
   return (
     <ScrollView
       horizontal
       showsHorizontalScrollIndicator={false}
-      style={[{ height: 18, display: "flex", backgroundColor: "lightblue" }]}
+      style={{
+        display: "flex",
+        backgroundColor: "lightblue",
+      }}
+      onLayout={onContainerLayout}
     >
       <Animated.Text
-        onLayout={(e: LayoutChangeEvent) => {
-          console.log(e.nativeEvent);
-        }}
-        style={{ transform: [{ translateX: -405 }] }}
+        onLayout={onTextLayout}
+        style={[rStyle, style]}
         numberOfLines={1}
       >
         AnimatedText long text AnimatedText long text AnimatedText long text
