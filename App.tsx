@@ -7,8 +7,8 @@ export default function App() {
     <View style={styles.container}>
       <View style={{ height: 270, width: 200, backgroundColor: "yellow" }}>
         <View style={{ height: 200, width: "100%", backgroundColor: "red" }} />
-        <AnimatedText style={{ fontSize: 40 }} />
-        <Text>Dasdasdasdasdas</Text>
+        <AnimatedText textStyle={{ fontSize: 40, paddingHorizontal: 20 }} />
+        <Text>TEST</Text>
       </View>
       <StatusBar style="auto" />
     </View>
