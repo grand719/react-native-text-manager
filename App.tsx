@@ -1,16 +1,41 @@
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
+import { Button, StyleSheet, Text, View } from "react-native";
 import AnimatedText from "./components/AnimatedText";
+import { useState } from "react";
+
+let s = "Animated test not fit and text is to long";
 
 export default function App() {
+  const [text, setText] = useState(s);
   return (
     <View style={styles.container}>
-      <View style={{ height: 270, width: 200, backgroundColor: "yellow" }}>
-        <View style={{ height: 200, width: "100%", backgroundColor: "red" }} />
-        <AnimatedText textStyle={{ fontSize: 40, paddingHorizontal: 20 }} />
-        <Text>TEST</Text>
+      <View style={{ width: "50%" }}>
+        <AnimatedText
+          duration={s.length * 250}
+          style={{ fontSize: 40 }}
+          repeatSpacer={30}
+        >
+          {text}
+        </AnimatedText>
       </View>
-      <StatusBar style="auto" />
+      <View style={{ width: "80%", height: 10, backgroundColor: "red" }} />
+      <Text>TEST</Text>
+      <Text>TEST</Text>
+      <Text>TEST</Text>
+      <Text>TEST</Text>
+      <Text>TEST</Text>
+      <Button
+        title="change text"
+        onPress={() => {
+          setText("Test");
+        }}
+      />
+      <Button
+        title="change text2"
+        onPress={() => {
+          setText(s);
+        }}
+      />
     </View>
   );
 }
